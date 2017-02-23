@@ -57,6 +57,7 @@ RUN apk -v --update add \
         python \
         py-pip \
     && pip install packaging==16.8 appdirs==1.4.0 awsebcli==3.7.8 --upgrade --user \
+    && ln -s ~/.local/bin/eb /usr/local/bin/eb \
     && apk -v --purge del py-pip \
     && rm /var/cache/apk/*
 
