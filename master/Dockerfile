@@ -54,6 +54,7 @@ RUN apk --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testin
 
 # Add dependencies for AWS EB deployments.
 RUN apk -v --update add \
+        openssh \
         python \
         py-pip \
     && pip install packaging==16.8 appdirs==1.4.0 awsebcli==3.7.8 --upgrade --user \
