@@ -69,7 +69,7 @@ RUN apk -v --update add \
 RUN apk --no-cache add \
         nodejs \
         nodejs-npm \
-        make
+        make \
     && npm install --global "npm@latest" \
     && npm install --global "bower@${BOWER_VERSION}" \
     && npm install --global "gulp@${GULP_VERSION}" \
