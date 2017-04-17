@@ -1,10 +1,11 @@
 # PHPUnit Docker Container.
-FROM mhart/alpine-node:base-7.9.0
+FROM alpine:edge
 MAINTAINER Julien Breux <julien.breux@gmail.com>
 
 ENV PEAR_PACKAGES foo \
     GULP_VERSION 3.9.1 \
-    BOWER_VERSION 1.8.0
+    BOWER_VERSION 1.8.0 \
+    NPM_VERSION 3.7.1
 
 WORKDIR /tmp
 
@@ -38,7 +39,7 @@ RUN apk --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testin
         php7-pcntl \
         php7-ctype \
         php7-session \
-    && ln -s /usr/bin/php7 /usr/bin/php \
+    && php --version \
     && php -r "copy('https://pear.php.net/go-pear.phar', 'go-pear.phar');" \
     && php go-pear.phar \
     && php -r "unlink('go-pear.phar');" \
@@ -48,11 +49,10 @@ RUN apk --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testin
     && composer require "phpunit/phpunit:~6.0.6" --prefer-source --no-interaction \
     && composer require "phpunit/php-invoker" --prefer-source --no-interaction \
     && ln -s /tmp/vendor/bin/phpunit /usr/local/bin/phpunit \
-    && sed -i 's/nn and/nn, Julien Breux (Docker) and/g' /tmp/vendor/phpunit/phpunit/src/Runner/Version.php \
-
-    # Enable X-Debug
-    && sed -i 's/\;z/z/g' /etc/php7/conf.d/xdebug.ini \
-    && php -m | grep -i xdebug
+    && sed -i 's/nn and/nn, Julien Breux (Docker) and/g' /tmp/vendor/phpunit/phpunit/src/Runner/Version.php
+    # Enabling xdebug (currently nonfunctional due to alpine)
+    # && sed -i 's/\;z/z/g' /etc/php7/conf.d/xdebug.ini \
+    # && php -m | grep -i xdebug
 
 # Add dependencies for AWS EB deployments.
 RUN apk -v --update add \
@@ -64,11 +64,11 @@ RUN apk -v --update add \
     && apk -v --purge del py-pip \
     && rm /var/cache/apk/*
 
-# Add dependencies for gulp and bower
-RUN apk --no-cache add tini ca-certificates \
-    # Install Bower
-    && npm install --global "bower@${BOWER_VERSION}" \
-    # Install Gulp
+# Add node and npm
+RUN apk --no-cache add nodejs nodejs-npm && npm install npm@latest -g
+
+# Add gulp and bower
+RUN npm install --global "bower@${BOWER_VERSION}" \
     && npm install --global "gulp@${GULP_VERSION}" \
     # Clean up
     && rm -rf /root/.npm \
