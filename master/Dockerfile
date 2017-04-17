@@ -1,8 +1,10 @@
 # PHPUnit Docker Container.
-FROM alpine:edge
+FROM mhart/alpine-node:base-7.9.0
 MAINTAINER Julien Breux <julien.breux@gmail.com>
 
-ENV PEAR_PACKAGES foo
+ENV PEAR_PACKAGES foo \
+    GULP_VERSION 3.9.1 \
+    BOWER_VERSION 1.8.0
 
 WORKDIR /tmp
 
@@ -61,6 +63,18 @@ RUN apk -v --update add \
     && ln -s ~/.local/bin/eb /usr/local/bin/eb \
     && apk -v --purge del py-pip \
     && rm /var/cache/apk/*
+
+# Add dependencies for gulp and bower
+RUN apk --no-cache add tini ca-certificates \
+    # Install Bower
+    && npm install --global "bower@${BOWER_VERSION}" \
+    # Install Gulp
+    && npm install --global "gulp@${GULP_VERSION}" \
+    # Clean up
+    && rm -rf /root/.npm \
+    && find / -depth -type d -name test* -exec rm -rf {} \; \
+    && find / -depth -type f -name *.md -exec rm -f {} \; \
+    && find / -depth -type f -name *.yml -exec rm -f {} \;
 
 ONBUILD RUN [ $PEAR_PACKAGES != "foo" ] && pear install $PEAR_PACKAGES
 
