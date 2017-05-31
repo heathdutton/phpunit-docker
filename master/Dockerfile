@@ -79,6 +79,9 @@ RUN apk --no-cache add \
     && find / -depth -type d -name test* -exec rm -rf {} \; \
     && find / -depth -type f -name *.md -exec rm -f {} \; \
     && find / -depth -type f -name *.yml -exec rm -f {} \;
+    
+# Add rsync as commonly used in Bitbucket pipelines.
+RUN apk --no-cache add rsync
 
 ONBUILD RUN [ $PEAR_PACKAGES != "foo" ] && pear install $PEAR_PACKAGES
 
