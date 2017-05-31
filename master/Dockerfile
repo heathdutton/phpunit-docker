@@ -40,6 +40,8 @@ RUN apk --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testin
         php7-pcntl \
         php7-ctype \
         php7-session \
+        php7-tokenizer \
+        php7-xmlwriter \
     && php --version \
     && php -r "copy('https://pear.php.net/go-pear.phar', 'go-pear.phar');" \
     && php go-pear.phar \
