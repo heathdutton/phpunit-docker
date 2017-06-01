@@ -72,10 +72,10 @@ RUN apk --no-cache add \
         nodejs \
         nodejs-npm \
         make \
-    && npm install --global "npm@latest" \
-    && npm install --global "bower@${BOWER_VERSION}" \
-    && npm install --global "gulp@${GULP_VERSION}" \
-    && npm install --global "node-sass@latest" \
+    && npm install --global --unsafe-perm "npm@latest" \
+    && npm install --global --unsafe-perm "bower@${BOWER_VERSION}" \
+    && npm install --global --unsafe-perm "gulp@${GULP_VERSION}" \
+    && npm install --global --unsafe-perm "node-sass@latest" \
     # Clean up
     && rm -rf /root/.npm \
     && find / -depth -type d -name test* -exec rm -rf {} \; \
