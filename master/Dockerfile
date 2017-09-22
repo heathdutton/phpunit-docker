@@ -36,6 +36,7 @@ RUN apk --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testin
         php7-pdo_sqlite \
         php7-pdo_mysql \
         php7-soap \
+        php7-simplexml \
         php7-xdebug \
         php7-pcntl \
         php7-ctype \
