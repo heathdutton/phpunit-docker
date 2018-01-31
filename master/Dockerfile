@@ -43,6 +43,7 @@ RUN apk --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testin
         php7-session \
         php7-tokenizer \
         php7-xmlwriter \
+        php7-posix \
     && php --version \
     && php -r "copy('https://pear.php.net/go-pear.phar', 'go-pear.phar');" \
     && php go-pear.phar \
