@@ -16,7 +16,7 @@ RUN apk --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testin
         git \
         curl \
         unzip \
-	redis \
+        redis \
         php7 \
         php7-xml \
         php7-exif \
